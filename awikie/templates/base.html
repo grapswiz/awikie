@@ -20,8 +20,23 @@
   <head>
     <meta charset="UTF-8">
     <title>{{ page_title }} - awikie</title>
+    <base href="{{ base_url }}">
+    <link rel="stylesheet" type="text/css" href="css/awikie.css">
   </head>
   <body>
-    {% block content %}{% endblock %}
+    <header>
+      <h1><a href="/">awikie</a></h1>
+      <div id="navigator_area">
+        <ul id="navigator">
+          <li class="navigator item"><a href="edit/{{ page_title }}">edit</a></li>
+        </ul>
+      </div>
+    </header>
+    <div id="content">
+      {% block content %}{% endblock %}
+    </div>
+    <footer>
+      <p>awikie Copyright &copy; &lt;2013&gt; Motoki Naruse &lt;motoki@naru.se&gt;</p>
+    </footer>
   </body>
 </html>

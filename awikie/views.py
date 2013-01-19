@@ -25,26 +25,33 @@ class BaseView(View):
     def get_page_title(self, path):
         return path if path else 'index'
 
+    def get_protocol(self):
+        return 'http' + ('s' if self.request.is_secure() else '')
+
+    def http_response(self, template, attrs={}):
+        attrs['base_url'] = '{protocol}://{host}'.format(
+            protocol=self.get_protocol(),
+            host=self.request.get_host(),
+        )
+        return HttpResponse(loader.get_template(template).render(Context(attrs)))
+
 class BrowserView(BaseView):
     def get(self, request, path):
         page_title = self.get_page_title(path)
         page = Page.find(page_title)
         if page:
-            context = Context({
+            return self.http_response('index.html', {
                 'page_title': page_title,
                 'body': page.body,
             })
-            return HttpResponse(loader.get_template('index.html').render(context))
         else:
             return HttpResponseRedirect('edit/' + page_title)
 
 class EditView(BaseView):
     def get(self, request, path):
-        page_title = self.get_page_title(path)
-        context = Context({
-            'page_title': page_title,
+        return self.http_response('edit.html', {
+            'page_title': self.get_page_title(path),
         })
-        return HttpResponse(loader.get_template('edit.html').render(context))
 
     def post(self, request, path):
         page_title = self.get_page_title(path)
@@ -54,4 +61,3 @@ class EditView(BaseView):
             body=body
         ).save()
         return HttpResponseRedirect(page_title)
-
