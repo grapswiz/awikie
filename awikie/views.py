@@ -20,6 +20,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Context, loader
 from django.views.generic import View
 from models import *
+import markdown
 
 class BaseView(View):
     def get_page_title(self, path):
@@ -42,16 +43,20 @@ class BrowserView(BaseView):
         if page:
             return self.http_response('index.html', {
                 'page_title': page_title,
-                'body': page.body,
+                'body': markdown.Markdown().convert(page.body),
             })
         else:
             return HttpResponseRedirect('edit/' + page_title)
 
 class EditView(BaseView):
     def get(self, request, path):
-        return self.http_response('edit.html', {
+        attrs = {
             'page_title': self.get_page_title(path),
-        })
+        }
+        page = Page.find(attrs['page_title'])
+        if page:
+            attrs['body'] = page.body
+        return self.http_response('edit.html', attrs)
 
     def post(self, request, path):
         page_title = self.get_page_title(path)
