@@ -86,3 +86,9 @@ class HistoryView(BaseView):
             path = history.title
             history.revert()
         return self.http_redirect(path)
+
+class PageListView(BaseView):
+    def get(self, request):
+        return self.http_response('page_list.html', {
+            'page_list': Page.find_all()
+        })

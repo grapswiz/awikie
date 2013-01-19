@@ -40,6 +40,10 @@ class Page(db.Model):
     def find_by_title(self, title):
         return db.Query(Page).filter('title =', title).get()
 
+    @classmethod
+    def find_all(self):
+        return db.Query(Page).order('title').fetch(1000)
+
 class History(db.Model):
     title = db.StringProperty(required=True)
     body = db.TextProperty()

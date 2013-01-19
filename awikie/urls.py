@@ -22,5 +22,6 @@ from awikie.views import *
 urlpatterns = patterns('',
     (r'^edit/(?P<path>.*)$', EditView.as_view()),
     (r'^history/(?P<path>.*)$', HistoryView.as_view()),
+    (r'^page_list$', PageListView.as_view()),
     (r'^(?P<path>.*)$', BrowserView.as_view()),
 )
