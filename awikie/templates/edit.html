@@ -17,6 +17,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 {% endcomment %}
 
+{% block head %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script src="js/lib/markdown.js"></script>
+<script src="js/awikieedit.js"></script>
+{% endblock %}
+
 {% block content %}
 <h2><a href="{{ page_title }}">{{ page_title }}</a></h2>
 <form action="edit/{{ page_title }}" method="post">
@@ -26,5 +32,9 @@
   <div id="submit_area">
     <button type="submit">Submit</button>
   </div>
+  <fieldset>
+    <legend>Preview</legend>
+    <div id="preview_area" />
+  </fieldset>
 </form>
 {% endblock %}

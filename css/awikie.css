@@ -9,6 +9,10 @@ header h1 {
     margin-right: 20px;
 }
 
+#body {
+    width: 100%;
+}
+
 #navigator {
     width: 100%;
     text-align: right;
@@ -18,3 +22,4 @@ header h1 {
     display: inline;
     margin-left: 20px;
 }
+
