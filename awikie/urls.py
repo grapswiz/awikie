@@ -18,6 +18,7 @@
 
 from django.conf.urls.defaults import *
  
-urlpatterns = patterns('',
-    (r'^$', 'awikie.views.index'),
+urlpatterns = patterns(
+    'awikie.views',
+    (r'^(?P<path>.*)$', 'index'),
     )

@@ -19,5 +19,10 @@
 from django.http import HttpResponse
 from django.template import Context, loader
 
-def index(request):
-    return HttpResponse(loader.get_template('index.html').render(Context({})))
+def index(request, path):
+    page_title = path if path else 'index'
+    context = Context({
+            'page_title': page_title,
+            })
+
+    return HttpResponse(loader.get_template('edit.html').render(context))
