@@ -69,3 +69,12 @@ class EditView(BaseView):
         Page(title=page_title, body=request.POST['body']).save()
 
         return self.http_redirect(page_title)
+
+class HistoryView(BaseView):
+    def get(self, request, path):
+        page_title = self.get_page_title(path)
+
+        return self.http_response('history.html', {
+            'page_title': page_title,
+            'histories': History.find_by_title(page_title),
+        })

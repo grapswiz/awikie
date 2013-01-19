@@ -44,3 +44,7 @@ class History(db.Model):
     body = db.TextProperty()
     updated_at = db.DateTimeProperty(required=True)
 
+    @classmethod
+    def find_by_title(self, title):
+        q = db.Query(History).filter('title =', title).order('-updated_at')
+        return q.fetch(100)
