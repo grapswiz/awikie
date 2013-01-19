@@ -29,8 +29,10 @@ class Page(db.Model):
             History(
                 title=old.title,
                 body=old.body,
-                update_at=old.update_at
+                updated_at=old.updated_at
             ).put()
+            old.body = self.body
+            self = old
         self.put()
 
     @classmethod

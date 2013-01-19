@@ -29,12 +29,18 @@ class BaseView(View):
     def get_protocol(self):
         return 'http' + ('s' if self.request.is_secure() else '')
 
-    def http_response(self, template, attrs={}):
-        attrs['base_url'] = '{protocol}://{host}'.format(
+    def get_base_url(self):
+        return '{protocol}://{host}'.format(
             protocol=self.get_protocol(),
             host=self.request.get_host(),
         )
+
+    def http_response(self, template, attrs={}):
+        attrs['base_url'] = self.get_base_url()
         return HttpResponse(loader.get_template(template).render(Context(attrs)))
+
+    def http_redirect(self, path):
+        return HttpResponseRedirect(self.get_base_url() + '/' + path)
 
 class BrowserView(BaseView):
     def get(self, request, path):
@@ -46,7 +52,7 @@ class BrowserView(BaseView):
                 'body': markdown.Markdown().convert(page.body),
             })
         else:
-            return HttpResponseRedirect('edit/' + page_title)
+            return self.http_redirect('edit/' + page_title)
 
 class EditView(BaseView):
     def get(self, request, path):
@@ -60,9 +66,6 @@ class EditView(BaseView):
 
     def post(self, request, path):
         page_title = self.get_page_title(path)
-        body = request.POST['body']
-        Page(
-            title=page_title,
-            body=body
-        ).save()
-        return HttpResponseRedirect(page_title)
+        Page(title=page_title, body=request.POST['body']).save()
+
+        return self.http_redirect(page_title)
