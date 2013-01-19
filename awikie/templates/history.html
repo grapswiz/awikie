@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+
 {% comment %}
     awikie -- This is Wiki engine working in Google App Engine.
     Copyright (C) <2013> Motoki Naruse <motoki@naru.se>
@@ -25,11 +26,11 @@
 
 {% block content %}
 <fieldset>
-  <legend><a href="{{ page_title }}">{{ page_title }}</a></legend>
+  <legend><a href="{{ page_title }}" id="page_title">{{ page_title }}</a></legend>
   <div class="history_area">
     <ul>
-      <li><button id="current" data-key="current_body">current</button></li>
-      <code class="invisible" id="current_body">{{ current.body }}</code>
+      <li><button id="current" data-key="{{ page_title }}">current</button></li>
+      <code class="invisible" id="{{ page_title }}">{{ current.body }}</code>
       {% for history in histories %}
         <li><button class="preview" data-key="{{ history.key }}">{{ history.updated_at|date:"Y/M/d(D) H:m:s" }}</a></li>
         <code class="invisible" id="{{ history.key }}">{{ history.body }}</code>
@@ -37,10 +38,12 @@
     </ul>
   </div>
   <div id="history_preview_area">
-    <fieldset>
-      <legend><button>Revert</button></legend>
-      <div id="preview_area"/>
-    </fieldset>
+    <form id="history_form">
+      <fieldset>
+        <legend><button type="submit">Revert</button></legend>
+        <div id="preview_area"/>
+      </fieldset>
+    </form>
   </div>
 </fieldset>
 {% endblock %}

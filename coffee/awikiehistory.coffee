@@ -17,10 +17,22 @@
 ###
 
 $ =>
+  form = $('#history_form')
   preview_area = $('#preview_area')
-  preview = (item) =>
-    preview_area.html markdown.toHTML $('#' + item.data 'key').html()
+  page_title = $('#page_title').html()
   current = $('#current')
-  preview current
+
+  preview = (item) =>
+    key = item.data 'key'
+    if key is page_title
+      form.attr 'action', key
+      form.attr 'method', 'get'
+    else
+      form.attr 'action', 'history/' + key
+      form.attr 'method', 'post'
+    preview_area.html markdown.toHTML $('#' + key).html()
+
   current.on 'click', => preview current
   $('.preview').each -> ((item) => item.on 'click', => preview item) $(this)
+
+  preview current

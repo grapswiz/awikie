@@ -17,6 +17,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from google.appengine.ext import db
+from google.appengine.api.datastore import Key
 
 class Page(db.Model):
     title = db.StringProperty(required=True)
@@ -36,7 +37,7 @@ class Page(db.Model):
         self.put()
 
     @classmethod
-    def find(self, title):
+    def find_by_title(self, title):
         return db.Query(Page).filter('title =', title).get()
 
 class History(db.Model):
@@ -48,3 +49,10 @@ class History(db.Model):
     def find_by_title(self, title):
         q = db.Query(History).filter('title =', title).order('-updated_at')
         return q.fetch(100)
+
+    @classmethod
+    def find(self, key):
+        return db.Query(History).filter('__key__ =', Key(key)).get()
+
+    def revert(self):
+        Page(title=self.title, body=self.body).save()

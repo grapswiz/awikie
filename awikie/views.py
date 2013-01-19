@@ -45,7 +45,7 @@ class BaseView(View):
 class BrowserView(BaseView):
     def get(self, request, path):
         page_title = self.get_page_title(path)
-        page = Page.find(page_title)
+        page = Page.find_by_title(page_title)
         if page:
             return self.http_response('index.html', {
                 'page_title': page_title,
@@ -59,7 +59,7 @@ class EditView(BaseView):
         attrs = {
             'page_title': self.get_page_title(path),
         }
-        page = Page.find(attrs['page_title'])
+        page = Page.find_by_title(attrs['page_title'])
         if page:
             attrs['body'] = page.body
         return self.http_response('edit.html', attrs)
@@ -77,5 +77,12 @@ class HistoryView(BaseView):
         return self.http_response('history.html', {
             'page_title': page_title,
             'histories': History.find_by_title(page_title),
-            'current': Page.find(page_title),
+            'current': Page.find_by_title(page_title),
         })
+
+    def post(self, request, path):
+        history = History.find(path)
+        if history:
+            path = history.title
+            history.revert()
+        return self.http_redirect(path)
