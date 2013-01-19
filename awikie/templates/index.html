@@ -18,8 +18,8 @@
 {% endcomment %}
 
 {% block content %}
-<h2>{{ page_title }}</h2>
-<div id="edit_area">
-  {{ body|safe }}
-</div>
+<fieldset>
+  <legend>{{ page_title }}</legend>
+  <div id="edit_area">{{ body|safe }}</div>
+</fieldset>
 {% endblock %}
