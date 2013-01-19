@@ -17,13 +17,30 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 {% endcomment %}
 
+{% block head %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script src="js/lib/markdown.js"></script>
+<script src="js/awikiehistory.js"></script>
+{% endblock %}
+
 {% block content %}
 <fieldset>
   <legend><a href="{{ page_title }}">{{ page_title }}</a></legend>
-  <ul>
-  {% for history in histories %}
-    <li><a href="{{history.key}}">{{ history.updated_at|date:"Y/M/d(D) H:m:s" }}</a></li>
-  {% endfor %}
-  </ul>
+  <div class="history_area">
+    <ul>
+      <li><button id="current" data-key="current_body">current</button></li>
+      <code class="invisible" id="current_body">{{ current.body }}</code>
+      {% for history in histories %}
+        <li><button class="preview" data-key="{{ history.key }}">{{ history.updated_at|date:"Y/M/d(D) H:m:s" }}</a></li>
+        <code class="invisible" id="{{ history.key }}">{{ history.body }}</code>
+      {% endfor %}
+    </ul>
+  </div>
+  <div id="history_preview_area">
+    <fieldset>
+      <legend><button>Revert</button></legend>
+      <div id="preview_area"/>
+    </fieldset>
+  </div>
 </fieldset>
 {% endblock %}

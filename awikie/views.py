@@ -77,4 +77,5 @@ class HistoryView(BaseView):
         return self.http_response('history.html', {
             'page_title': page_title,
             'histories': History.find_by_title(page_title),
+            'current': Page.find(page_title),
         })

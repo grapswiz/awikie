@@ -17,9 +17,10 @@
 ###
 
 $ =>
-  body = $('#body')
-  update_preview = => (
-    (input, output) => output.html markdown.toHTML input.val()
-  ) body, $('#preview_area')
-  body.on 'input', => update_preview()
-  update_preview()
+  preview_area = $('#preview_area')
+  preview = (item) =>
+    preview_area.html markdown.toHTML $('#' + item.data 'key').html()
+  current = $('#current')
+  preview current
+  current.on 'click', => preview current
+  $('.preview').each -> ((item) => item.on 'click', => preview item) $(this)

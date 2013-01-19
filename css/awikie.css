@@ -23,3 +23,15 @@ header h1 {
     margin-left: 20px;
 }
 
+.invisible {
+    display: none;
+}
+
+.history_area {
+    float: left;
+    margin-right: 20px;
+}
+
+#history_preview_area {
+    overflow: hidden;
+}
