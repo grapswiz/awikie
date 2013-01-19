@@ -21,7 +21,24 @@ from django.template import Context, loader
 from django.views.generic import View
 from models import *
 
-class Edit(View):
+class BaseView(View):
+    def get_page_title(self, path):
+        return path if path else 'index'
+
+class BrowserView(BaseView):
+    def get(self, request, path):
+        page_title = self.get_page_title(path)
+        page = Page.find(page_title)
+        if page:
+            context = Context({
+                'page_title': page_title,
+                'body': page.body,
+            })
+            return HttpResponse(loader.get_template('index.html').render(context))
+        else:
+            return HttpResponseRedirect('edit/' + page_title)
+
+class EditView(BaseView):
     def get(self, request, path):
         page_title = self.get_page_title(path)
         context = Context({
@@ -38,5 +55,3 @@ class Edit(View):
         ).save()
         return HttpResponseRedirect(page_title)
 
-    def get_page_title(self, path):
-        return path if path else 'index'

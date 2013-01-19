@@ -20,5 +20,6 @@ from django.conf.urls.defaults import *
 from awikie.views import *
 
 urlpatterns = patterns('',
-    (r'^edit/(?P<path>.*)$', Edit.as_view()),
+    (r'^edit/(?P<path>.*)$', EditView.as_view()),
+    (r'^(?P<path>.*)$', BrowserView.as_view()),
 )

@@ -33,6 +33,10 @@ class Page(db.Model):
             ).put()
         self.put()
 
+    @classmethod
+    def find(self, title):
+        return db.Query(Page).filter('title =', title).get()
+
 class History(db.Model):
     title = db.StringProperty(required=True)
     body = db.TextProperty()
