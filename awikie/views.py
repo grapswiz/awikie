@@ -18,11 +18,13 @@
 
 from django.http import HttpResponse
 from django.template import Context, loader
+from django.views.generic import View
 
-def index(request, path):
-    page_title = path if path else 'index'
-    context = Context({
-            'page_title': page_title,
-            })
+class Edit(View):
+    def get(self, request, path):
+        page_title = path if path else 'index'
+        context = Context({
+                'page_title': page_title,
+                })
 
-    return HttpResponse(loader.get_template('edit.html').render(context))
+        return HttpResponse(loader.get_template('edit.html').render(context))

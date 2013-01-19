@@ -17,8 +17,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.conf.urls.defaults import *
- 
-urlpatterns = patterns(
-    'awikie.views',
-    (r'^(?P<path>.*)$', 'index'),
-    )
+from awikie.views import *
+
+urlpatterns = patterns('',
+    (r'^edit/(?P<path>.*)$', Wiki.as_view()),
+)
