@@ -18,13 +18,23 @@
 
 from google.appengine.ext import db
 
-class Page(db.model):
-    title = db.StringProperty(require=True)
+class Page(db.Model):
+    title = db.StringProperty(required=True)
     body = db.TextProperty()
-    updated_at = db.DateTimeProperty(required=True)
+    updated_at = db.DateTimeProperty(required=True, auto_now=True)
 
-class History(db.model):
-    title = db.StringProperty(require=True)
+    def save(self):
+        old = db.Query(Page).filter('title =', self.title).get()
+        if old:
+            History(
+                title=old.title,
+                body=old.body,
+                update_at=old.update_at
+            ).put()
+        self.put()
+
+class History(db.Model):
+    title = db.StringProperty(required=True)
     body = db.TextProperty()
     updated_at = db.DateTimeProperty(required=True)
 

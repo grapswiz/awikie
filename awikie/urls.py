@@ -20,5 +20,5 @@ from django.conf.urls.defaults import *
 from awikie.views import *
 
 urlpatterns = patterns('',
-    (r'^edit/(?P<path>.*)$', Wiki.as_view()),
+    (r'^edit/(?P<path>.*)$', Edit.as_view()),
 )

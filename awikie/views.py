@@ -16,15 +16,27 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Context, loader
 from django.views.generic import View
+from models import *
 
 class Edit(View):
     def get(self, request, path):
-        page_title = path if path else 'index'
+        page_title = self.get_page_title(path)
         context = Context({
-                'page_title': page_title,
-                })
-
+            'page_title': page_title,
+        })
         return HttpResponse(loader.get_template('edit.html').render(context))
+
+    def post(self, request, path):
+        page_title = self.get_page_title(path)
+        body = request.POST['body']
+        Page(
+            title=page_title,
+            body=body
+        ).save()
+        return HttpResponseRedirect(page_title)
+
+    def get_page_title(self, path):
+        return path if path else 'index'

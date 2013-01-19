@@ -20,12 +20,14 @@
 {% block content %}
 <div>
   <h2>{{ page_title }}</h2>
-  <div id="edit_area">
-    <textarea id="body" rows="20"></textarea>
-  </div>
-  <div id="submit_area">
-    <button type="button">Submit</button>
-  </div>
+  <form action="{{ page_title }}" method="post">
+    <div id="edit_area">
+      <textarea id="body" name="body" rows="20"></textarea>
+    </div>
+    <div id="submit_area">
+      <button type="submit">Submit</button>
+    </div>
+  </form>
 </div>
 {% endblock %}
 
