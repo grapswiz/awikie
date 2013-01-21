@@ -24,15 +24,23 @@ handlers:
 - url: /favicon\.ico
   static_files: favicon.ico
   upload: favicon\.ico
+  login: required
+  secure: always
 
 - url: /css
   static_dir: css
+  login: required
+  secure: always
 
 - url: /js
   static_dir: js
+  login: required
+  secure: always
 
 - url: .*
   script: main.app
+  login: required
+  secure: always
 
 libraries:
 - name: django

@@ -21,8 +21,17 @@ from django.template import Context, loader
 from django.views.generic import View
 from models import *
 import markdown
+from django.conf import settings
+from google.appengine.api import users
 
 class BaseView(View):
+    def dispatch(self, request, *args, **kwargs):
+        if not users.get_current_user().email() in settings.AUTHORIZED_USER:
+            if not 'localhost' == request.META['SERVER_NAME']:
+                if not 0 == len(settings.AUTHORIZED_USER):
+                    return HttpResponse(status=403)
+        return View.dispatch(self, request, *args, **kwargs)
+
     def get_page_title(self, path):
         return path if path else 'index'
 
