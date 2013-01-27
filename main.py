@@ -17,8 +17,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-
+import sys
 os.environ['DJANGO_SETTINGS_MODULE'] = 'awikie.settings'
+from google.appengine.api import memcache
+sys.modules['memcache'] = memcache
 
 import django.core.handlers.wsgi
 app = django.core.handlers.wsgi.WSGIHandler()

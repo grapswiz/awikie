@@ -18,11 +18,25 @@
 
 from google.appengine.ext import ndb
 from google.appengine.api.datastore import Key
+from django.core.cache import cache
+import base64
 
 class Page(ndb.Model):
     title = ndb.StringProperty(required=True)
     body = ndb.TextProperty()
     updated_at = ndb.DateTimeProperty(required=True, auto_now=True)
+
+    @classmethod
+    def b64encode(self, source):
+        return base64.b64encode(source.encode('utf-8'))
+
+    @classmethod
+    def get_cache_name(self, title):
+        return 'Page_' + Page.b64encode(title)
+
+    @classmethod
+    def get_list_cache_name(self):
+        return 'Page_list'
 
     def save(self):
         old = Page.query().filter(Page.title == self.title).get()
@@ -35,14 +49,30 @@ class Page(ndb.Model):
             old.body = self.body
             self = old
         self.put()
+        cache.set(Page.get_cache_name(self.title), self, 86400)
+        cache.delete(Page.get_list_cache_name())
 
     @classmethod
     def find_by_title(self, title):
-        return Page.query().filter(Page.title == title).get()
+        cache_name = Page.get_cache_name(title)
+        cached = cache.get(cache_name)
+        if cached:
+            return cached
+        page = Page.query().filter(Page.title == title).get()
+        cache.set(cache_name, page, 86400)
+
+        return page
 
     @classmethod
     def find_all(self):
-        return Page.query().order(Page.title).fetch(1000)
+        list_cache_name = Page.get_list_cache_name()
+        cached = cache.get(list_cache_name)
+        if cached:
+            return cached
+        page_list = Page.query().order(Page.title).fetch(1000)
+        cache.set(list_cache_name, page_list, 86400)
+
+        return page_list
 
 class History(ndb.Model):
     title = ndb.StringProperty(required=True)
@@ -51,12 +81,12 @@ class History(ndb.Model):
 
     @classmethod
     def find_by_title(self, title):
-        q = History.query().filter(Page.title == title).order(-Page.updated_at)
+        q = History.query().filter(History.title == title).order(-History.updated_at)
         return q.fetch(100)
 
     @classmethod
     def find(self, key):
-        return History.query().filter(Page.__key__ == Key(key)).get()
+        return History.query().filter(History.__key__ == Key(key)).get()
 
     def revert(self):
         Page(title=self.title, body=self.body).save()

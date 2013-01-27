@@ -33,6 +33,8 @@ TEMPLATE_DIRS = (
     ROOT_PATH + '/templates',
 )
 
+CACHE_BACKEND = 'memcached:///'
+
 import sys
 sys.path.append(ROOT_PATH + '/lib')
 
