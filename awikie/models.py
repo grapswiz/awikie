@@ -16,16 +16,16 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from google.appengine.ext import db
+from google.appengine.ext import ndb
 from google.appengine.api.datastore import Key
 
-class Page(db.Model):
-    title = db.StringProperty(required=True)
-    body = db.TextProperty()
-    updated_at = db.DateTimeProperty(required=True, auto_now=True)
+class Page(ndb.Model):
+    title = ndb.StringProperty(required=True)
+    body = ndb.TextProperty()
+    updated_at = ndb.DateTimeProperty(required=True, auto_now=True)
 
     def save(self):
-        old = db.Query(Page).filter('title =', self.title).get()
+        old = Page.query().filter(Page.title == self.title).get()
         if old:
             History(
                 title=old.title,
@@ -38,25 +38,25 @@ class Page(db.Model):
 
     @classmethod
     def find_by_title(self, title):
-        return db.Query(Page).filter('title =', title).get()
+        return Page.query().filter(Page.title == title).get()
 
     @classmethod
     def find_all(self):
-        return db.Query(Page).order('title').fetch(1000)
+        return Page.query().order(Page.title).fetch(1000)
 
-class History(db.Model):
-    title = db.StringProperty(required=True)
-    body = db.TextProperty()
-    updated_at = db.DateTimeProperty(required=True)
+class History(ndb.Model):
+    title = ndb.StringProperty(required=True)
+    body = ndb.TextProperty()
+    updated_at = ndb.DateTimeProperty(required=True)
 
     @classmethod
     def find_by_title(self, title):
-        q = db.Query(History).filter('title =', title).order('-updated_at')
+        q = History.query().filter(Page.title == title).order(Page.updated_at)
         return q.fetch(100)
 
     @classmethod
     def find(self, key):
-        return db.Query(History).filter('__key__ =', Key(key)).get()
+        return History.query().filter(Page.__key__ == Key(key)).get()
 
     def revert(self):
         Page(title=self.title, body=self.body).save()

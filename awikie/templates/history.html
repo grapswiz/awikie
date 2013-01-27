@@ -32,8 +32,8 @@
       <li><button id="current" data-key="{{ page_title }}">current</button></li>
       <code class="invisible" id="{{ page_title }}">{{ current.body }}</code>
       {% for history in histories %}
-        <li><button class="preview" data-key="{{ history.key }}">{{ history.updated_at|date:"Y/M/d(D) H:m:s" }}</a></li>
-        <code class="invisible" id="{{ history.key }}">{{ history.body }}</code>
+        <li><button class="preview" data-key="{{ history.key.id }}">{{ history.updated_at|date:"Y/M/d(D) H:m:s" }}</a></li>
+        <code class="invisible" id="{{ history.key.id }}">{{ history.body }}</code>
       {% endfor %}
     </ul>
   </div>
