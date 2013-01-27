@@ -109,3 +109,23 @@ header a:visited {
     color: #4A4A4A;
     font-weight:bold;
 }
+
+footer a:link {
+    color: #4A4A4A;
+    font-weight:bold;
+}
+
+footer a:hover {
+    color: #4183C4;
+    font-weight:bold;
+}
+
+footer a:active {
+    color: #4183C4;
+    font-weight:bold;
+}
+
+footer a:visited {
+    color: #4A4A4A;
+    font-weight:bold;
+}

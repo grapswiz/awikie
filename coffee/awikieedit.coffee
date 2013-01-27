@@ -18,8 +18,8 @@
 
 fit = =>
   base_height = $('html').height() - $('header').height() - $('footer').height()
-  $('#body').height base_height  - 100
-  $('#edit_preview_area').height base_height - 70
+  $('#body').height base_height  - 105
+  $('#edit_preview_area').height base_height - 75
 
 $ =>
   body = $('#body')
