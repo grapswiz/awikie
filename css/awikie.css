@@ -72,6 +72,40 @@ html {
     height: 100%;
 }
 
+body {
+    margin: 0;
+}
+
 footer p {
     margin: 0;
+}
+
+header {
+    padding: 0 5px;
+    background: #F6F6F6;
+}
+
+footer {
+    padding: 5px 5px;
+    background: #F6F6F6;
+}
+
+header a:link {
+    color: #4A4A4A;
+    font-weight:bold;
+}
+
+header a:hover {
+    color: #4183C4;
+    font-weight:bold;
+}
+
+header a:active {
+    color: #4183C4;
+    font-weight:bold;
+}
+
+header a:visited {
+    color: #4A4A4A;
+    font-weight:bold;
 }
