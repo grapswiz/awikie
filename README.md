@@ -1,16 +1,21 @@
+require GoogleAppEngine SDK for Python and CoffeeScript
+
 Setup
 
 edit app.yaml
+
     application: your-app-name
 
 edit awikie/settings.py
 example:
+
     AUTHORIZED_USER = (
         'motoki@naru.se'
     )
 
-
 $ ./coffeecompile.sh
+
+$ appcfg update .
 
     awikie -- This is Wiki engine working in Google App Engine.
     Copyright (C) <2013> Motoki Naruse <motoki@naru.se>
