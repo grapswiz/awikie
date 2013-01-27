@@ -26,17 +26,19 @@
 {% block content %}
 <fieldset>
   <legend><a href="{{ page_title }}">{{ page_title }}</a></legend>
-  <form action="edit/{{ page_title }}" method="post">
-    <div id="edit_area">
-      <textarea id="body" name="body" rows="20">{{ body }}</textarea>
-    </div>
-    <div id="submit_area">
-      <button type="submit">Submit</button>
-    </div>
-    <fieldset>
-      <legend>Preview</legend>
-      <div id="preview_area" />
-    </fieldset>
-  </form>
+  <div id="edit_area">
+    <form action="edit/{{ page_title }}" method="post">
+      <div>
+        <textarea id="body" name="body">{{ body }}</textarea>
+      </div>
+      <div id="submit_area">
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+  <fieldset id="edit_preview_area">
+    <legend>Preview</legend>
+    <div id="preview_area" />
+  </fieldset>
 </fieldset>
 {% endblock %}

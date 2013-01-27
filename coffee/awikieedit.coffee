@@ -16,6 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###
 
+fit = =>
+  base_height = $('html').height() - $('header').height() - $('footer').height()
+  $('#body').height base_height  - 100
+  $('#edit_preview_area').height base_height - 70
+
 $ =>
   body = $('#body')
   update_preview = => (
@@ -23,3 +28,6 @@ $ =>
   ) body, $('#preview_area')
   body.on 'input', => update_preview()
   update_preview()
+  fit()
+
+$(window).resize => fit()
