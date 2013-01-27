@@ -26,6 +26,7 @@ from google.appengine.api import users
 
 class BaseView(View):
     def dispatch(self, request, *args, **kwargs):
+        # Authentication
         if not users.get_current_user().email() in settings.AUTHORIZED_USER:
             if not 'localhost' == request.META['SERVER_NAME']:
                 if not 0 == len(settings.AUTHORIZED_USER):
@@ -33,12 +34,16 @@ class BaseView(View):
         return View.dispatch(self, request, *args, **kwargs)
 
     def get_page_title(self, path):
+        """Return path. if empty, index."""
         return path if path else 'index'
 
     def get_protocol(self):
+        """Return protcol used to request from client."""
         return 'http' + ('s' if self.request.is_secure() else '')
 
     def get_base_url(self):
+        """Return URL in 'http://hostname:port' or'https://hostname:port'
+        format"""
         return '{protocol}://{host}'.format(
             protocol=self.get_protocol(),
             host=self.request.get_host(),
