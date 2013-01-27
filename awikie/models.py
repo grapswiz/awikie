@@ -51,7 +51,7 @@ class History(ndb.Model):
 
     @classmethod
     def find_by_title(self, title):
-        q = History.query().filter(Page.title == title).order(Page.updated_at)
+        q = History.query().filter(Page.title == title).order(-Page.updated_at)
         return q.fetch(100)
 
     @classmethod
