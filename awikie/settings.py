@@ -37,5 +37,5 @@ import sys
 sys.path.append(ROOT_PATH + '/lib')
 
 AUTHORIZED_USER = (
-    'motoki@naru.se'
+
 )
